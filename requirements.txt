@@ -1,0 +1,5 @@
+aiosmtpd
+motor
+dnspython
+python-dotenv
+flanker
