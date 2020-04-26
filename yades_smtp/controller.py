@@ -23,7 +23,13 @@ class Handler(AsyncMessage):
     ):
         mailbox = await self.db.mailboxes.find_one({'address': address})
         if not mailbox:
-            return '554 Mailbox not found'
+            return '550 Non-existent email address'
+        emails_in_mailbox = len(mailbox['emails'])
+        emails_count_limit = mailbox.get(
+            'emails_count_limit', self.config['emails_count_limit']
+        )
+        if emails_count_limit and emails_in_mailbox >= emails_count_limit:
+            return '552 Exceeded storage allocation'
         return MISSING
 
     async def handle_DATA(self, server, session, envelope):
@@ -89,10 +95,8 @@ class Controller:
         return SMTP(Handler(self.db, self.config), enable_SMTPUTF8=True)
 
     def run(self):
-        logging.info(
-            f'Starting server at {self.config["host"]}:{self.config["port"]}'
-        )
-        server = self.loop.create_server(
-            self.factory, host=self.config['host'], port=self.config['port']
-        )
+        host = self.config['smtp_host']
+        port = self.config['smtp_port']
+        logging.info(f'Starting server at {host}:{port}')
+        server = self.loop.create_server(self.factory, host=host, port=port)
         return server

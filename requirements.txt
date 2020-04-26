@@ -1,5 +1,5 @@
 aiosmtpd
 motor
 dnspython
-python-dotenv
 flanker
+environs
