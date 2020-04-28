@@ -1,5 +1,5 @@
-aiosmtpd
-motor
-dnspython
-flanker
-environs
+aiosmtpd==1.2  # https://github.com/aio-libs/aiosmtpd
+motor==2.1.0  # https://github.com/mongodb/motor
+dnspython==1.16.0  # https://github.com/rthalley/dnspython
+flanker==0.9.11  # https://github.com/mailgun/flanker
+environs==7.4.0  # https://github.com/sloria/environs
