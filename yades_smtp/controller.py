@@ -24,7 +24,7 @@ class Handler(AsyncMessage):
         mailbox = await self.db.mailboxes.find_one({'address': address})
         if not mailbox:
             return '550 Non-existent email address'
-        emails_in_mailbox = len(mailbox['emails'])
+        emails_in_mailbox = len(mailbox.get('emails', []))
         emails_count_limit = mailbox.get(
             'emails_count_limit', self.config['emails_count_limit']
         )
